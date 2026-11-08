@@ -1,0 +1,17 @@
+name: Lab readiness
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify hosted runner
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, json, platform
+          print(json.dumps({"status":"ready","system":platform.system(),"sha256":hashlib.sha256(b"mobile-vrp-lab-smoke").hexdigest()}))
+          PYCODE
